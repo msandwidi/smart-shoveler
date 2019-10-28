@@ -78,9 +78,9 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Smart Shoveler"
-        tools:layout_editor_absoluteX="173dp"
-        tools:layout_editor_absoluteY="411dp" />
+        android:layout_width="247dp"
+        android:layout_height="26dp"
+        android:text="Smart Shoveler and Lawn Mower"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="423dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
