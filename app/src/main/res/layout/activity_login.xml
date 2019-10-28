@@ -28,8 +28,8 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="318dp"
-        android:layout_height="0dp"
+        android:layout_width="329dp"
+        android:layout_height="45dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.127" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -78,9 +78,9 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="247dp"
-        android:layout_height="26dp"
+        android:layout_width="300dp"
+        android:layout_height="29dp"
         android:text="Smart Shoveler and Lawn Mower"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="423dp" />
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="339dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
