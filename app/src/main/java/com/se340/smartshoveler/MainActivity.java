@@ -25,5 +25,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button btnRegister = (Button) findViewById(R.id.btnHomeRegister);
+
+        btnRegister.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                MainActivity.this.startActivity(registerIntent);
+            }
+        });
+
     }
 }
