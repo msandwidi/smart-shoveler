@@ -24,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
                 final String name = etFullname.getText().toString();
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
+
+                RegisterRequest registerRequest = new RegisterActivity(name, email,);
             }
         });
     }
