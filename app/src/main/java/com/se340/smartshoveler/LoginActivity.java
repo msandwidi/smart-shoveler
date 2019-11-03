@@ -10,19 +10,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.se340.smartshoveler.helpers.SmartShoveler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etUsername = findViewById(R.id.etUsername);
         final EditText etPassword = findViewById(R.id.etPassword);
         final Button btnLogin = findViewById(R.id.btnLogin);
-
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
+        final ProgressBar signinprogressBar = findViewById(R.id.signinProgressBar);
+        signinprogressBar.setVisibility(View.GONE);
 
         final TextView registerLink = findViewById(R.id.tvRegosterHere);
 
@@ -52,8 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
 
-                pDialog.setMessage("Signing In ...");
-                showDialog();
+                signinprogressBar.setVisibility(View.VISIBLE);
 
                 //create response listener
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -62,41 +60,37 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonRes = new JSONObject(response);
                             boolean success = jsonRes.getBoolean("success");
-                            pDialog.dismiss();
 
                             if (success) {
+                                signinprogressBar.setVisibility(View.GONE);
                                 Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 LoginActivity.this.startActivity(goToDashboardIntent);
-                                hideDialog();
                             } else {
-                                pDialog.dismiss();
+                                signinprogressBar.setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(), "Bad Password", Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            hideDialog();
+                            signinprogressBar.setVisibility(View.GONE);
                         }
                     }
                 };
 
                 //send request
-                LoginRequest request = new LoginRequest(username, password, responseListener);
+                LoginRequest request = new LoginRequest(username, password, responseListener, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        signinprogressBar.setVisibility(View.GONE);
+                        Toast.makeText(SmartShoveler.getAppContext(), "Bad Password", Toast.LENGTH_LONG).show();
+                    }
+                });
 
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(request);
             }
         });
 
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 }

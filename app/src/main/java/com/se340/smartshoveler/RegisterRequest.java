@@ -1,7 +1,7 @@
 package com.se340.smartshoveler;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
-import com.se340.smartshoveler.com.se340.smartshoveler.helpers.Constant;
+import com.se340.smartshoveler.helpers.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
