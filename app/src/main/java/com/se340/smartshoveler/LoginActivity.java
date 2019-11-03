@@ -1,6 +1,9 @@
 package com.se340.smartshoveler;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -10,25 +13,92 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
+
+    private ProgressDialog pDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
-        final Button btnLogin = (Button) findViewById(R.id.btnLogin);
-        
+        final EditText etUsername = findViewById(R.id.etUsername);
+        final EditText etPassword = findViewById(R.id.etPassword);
+        final Button btnLogin = findViewById(R.id.btnLogin);
+
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
         final TextView registerLink = (TextView) findViewById(R.id.tvRegosterHere);
 
-        registerLink.setOnClickListener(new View.OnClickListener(){
+        registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
             }
         });
 
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = etUsername.getText().toString();
+                final String password = etPassword.getText().toString();
+
+                pDialog.setMessage("Signing In ...");
+                showDialog();
+
+                //create response listener
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonRes = new JSONObject(response);
+                            boolean success = jsonRes.getBoolean("success");
+
+                            if (success) {
+                                Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                LoginActivity.this.startActivity(goToDashboardIntent);
+                                hideDialog();
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setMessage("Login Failled").setNegativeButton("Retry", null).create().show();
+                                hideDialog();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            hideDialog();
+                        }
+                    }
+                };
+
+                //send request
+                LoginRequest request = new LoginRequest(username, password, responseListener);
+
+                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                queue.add(request);
+
+            }
+        });
+
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }

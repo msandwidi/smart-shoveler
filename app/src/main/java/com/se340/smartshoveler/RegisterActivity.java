@@ -14,11 +14,15 @@ import android.app.AlertDialog;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import android.app.ProgressDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private ProgressDialog pDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,10 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText etPassword = findViewById(R.id.etPassword);
         final Button btnRegister = findViewById(R.id.btnRegister);
 
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,8 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
 
+                pDialog.setMessage("Signing Up ...");
+                showDialog();
+
                 //create response listener
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
+                   
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -47,13 +59,17 @@ public class RegisterActivity extends AppCompatActivity {
                             if (success) {
                                 Intent backToLoginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(backToLoginIntent);
+                                hideDialog();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Failled").setNegativeButton("Retry", null).create().show();
+                                builder.setMessage("Failled").setNegativeButton("Retry", null).create()
+                                .show();
+                                hideDialog();
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            hideDialog();
                         }
                     }
                 };
@@ -76,5 +92,15 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterActivity.this.startActivity(registerIntent);
             }
         });
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }
