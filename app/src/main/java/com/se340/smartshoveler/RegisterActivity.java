@@ -9,6 +9,15 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.app.AlertDialog;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
@@ -26,6 +35,35 @@ public class RegisterActivity extends AppCompatActivity {
                 final String name = etFullname.getText().toString();
                 final String email = etEmail.getText().toString();
                 final String password = etPassword.getText().toString();
+
+                //create response listener
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonRes = new JSONObject(response);
+                            boolean success = jsonRes.getBoolean("success");
+
+                            if (success) {
+                                Intent backToLoginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                RegisterActivity.this.startActivity(backToLoginIntent);
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setMessage("Failled").setNegativeButton("Retry", null).create().show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                //send request 
+                RegisterRequest request = new RegisterRequest(name, email, password, responseListener);
+
+                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                queue.add(request);
+
             }
         });
 
