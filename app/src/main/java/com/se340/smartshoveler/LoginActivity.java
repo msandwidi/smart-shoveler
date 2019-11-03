@@ -7,11 +7,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = etPassword.getText().toString();
 
                 pDialog.setMessage("Signing In ...");
-                //showDialog();
+                showDialog();
 
                 //create response listener
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -62,18 +62,15 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonRes = new JSONObject(response);
                             boolean success = jsonRes.getBoolean("success");
+                            pDialog.dismiss();
 
                             if (success) {
                                 Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 LoginActivity.this.startActivity(goToDashboardIntent);
                                 hideDialog();
                             } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Login Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
-                                hideDialog();
+                                pDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Bad Password", Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {
