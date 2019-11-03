@@ -7,11 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +18,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.se340.smartshoveler.helpers.SmartShoveler;
+import com.se340.smartshoveler.helpers.Constant;
+import com.se340.smartshoveler.helpers.DatabaseHandler;
+import com.se340.smartshoveler.helpers.Functions;
+import com.se340.smartshoveler.helpers.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,8 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
+    private SessionManager session;
+    private DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,23 @@ public class LoginActivity extends AppCompatActivity {
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
+
+
+        // create sqlite database
+        db = new DatabaseHandler(getApplicationContext());
+
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        // check user is already logged in
+        if (session.isLoggedIn()) {
+            Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        // Hide Keyboard
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         final TextView registerLink = findViewById(R.id.tvRegosterHere);
 
@@ -69,9 +90,23 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonRes.getBoolean("success");
 
                             if (success) {
+                                JSONObject user = jsonRes.getJSONObject("user");
+
+                                db.addUser(
+                                        user.getString(Constant.KEY_UID),
+                                        user.getString(Constant.KEY_NAME),
+                                        user.getString(Constant.KEY_EMAIL)
+                                );
+
                                 hideDialog();
                                 Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                goToDashboardIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                session.setLogin(true);
+
                                 LoginActivity.this.startActivity(goToDashboardIntent);
+
+                                finish();
+
                             } else {
                                 hideDialog();
                                 Toast.makeText(getApplicationContext(), "Bad Password", Toast.LENGTH_LONG).show();
