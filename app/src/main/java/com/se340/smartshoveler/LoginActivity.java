@@ -24,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        final TextView registerLink = (TextView) findViewById(R.id.tvRegosterHere);
+        final TextView registerLink = findViewById(R.id.tvRegosterHere);
 
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = etPassword.getText().toString();
 
                 pDialog.setMessage("Signing In ...");
-                showDialog();
+                //showDialog();
 
                 //create response listener
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -70,7 +69,10 @@ public class LoginActivity extends AppCompatActivity {
                                 hideDialog();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Login Failled").setNegativeButton("Retry", null).create().show();
+                                builder.setMessage("Login Failed")
+                                        .setNegativeButton("Retry", null)
+                                        .create()
+                                        .show();
                                 hideDialog();
                             }
 
@@ -86,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(request);
-
             }
         });
 
