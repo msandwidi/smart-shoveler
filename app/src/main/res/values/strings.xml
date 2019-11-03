@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Smart Shoveler</string>
-        <string name="register">Register</string>
-         <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="skip">Skip</string>
+    <string name="title_activity_maps">Your Area</string>
 </resources>
