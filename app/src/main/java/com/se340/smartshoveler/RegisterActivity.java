@@ -13,8 +13,12 @@ import android.app.AlertDialog;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.se340.smartshoveler.helpers.SmartShoveler;
+
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +26,6 @@ import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 //create response listener
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
-                   
+
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -63,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 builder.setMessage("Failled").setNegativeButton("Retry", null).create()
-                                .show();
+                                        .show();
                                 hideDialog();
                             }
 
@@ -74,8 +77,19 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
+                Response.ErrorListener errorListener = new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hideDialog();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        builder.setMessage("Failled").setNegativeButton("Retry", null).create()
+                                .show();
+                    }
+                };
+
                 //send request 
-                RegisterRequest request = new RegisterRequest(name, email, password, responseListener);
+                RegisterRequest request = new RegisterRequest(name, email, password, responseListener, errorListener);
 
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(request);

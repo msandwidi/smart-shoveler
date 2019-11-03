@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etUsername = findViewById(R.id.etUsername);
         final EditText etPassword = findViewById(R.id.etPassword);
         final Button btnLogin = findViewById(R.id.btnLogin);
-        final ProgressBar signinprogressBar = findViewById(R.id.signinProgressBar);
-        signinprogressBar.setVisibility(View.GONE);
+
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
 
         final TextView registerLink = findViewById(R.id.tvRegosterHere);
 
@@ -51,7 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
 
-                signinprogressBar.setVisibility(View.VISIBLE);
+                //show loading spinner
+                pDialog.setMessage("Signing In ...");
+                showDialog();
 
                 //create response listener
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -62,35 +69,52 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonRes.getBoolean("success");
 
                             if (success) {
-                                signinprogressBar.setVisibility(View.GONE);
+                                hideDialog();
                                 Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 LoginActivity.this.startActivity(goToDashboardIntent);
                             } else {
-                                signinprogressBar.setVisibility(View.GONE);
+                                hideDialog();
                                 Toast.makeText(getApplicationContext(), "Bad Password", Toast.LENGTH_LONG).show();
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            signinprogressBar.setVisibility(View.GONE);
+                            hideDialog();
                         }
+                    }
+
+
+                };
+
+                Response.ErrorListener errorListener = new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hideDialog();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                        builder.setMessage("Login Failled").setNegativeButton("Retry", null).create()
+                                .show();
+                        // Toast.makeText(SmartShoveler.getAppContext(), "Bad Password", Toast.LENGTH_LONG).show();
                     }
                 };
 
                 //send request
-                LoginRequest request = new LoginRequest(username, password, responseListener, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        signinprogressBar.setVisibility(View.GONE);
-                        Toast.makeText(SmartShoveler.getAppContext(), "Bad Password", Toast.LENGTH_LONG).show();
-                    }
-                });
+                LoginRequest request = new LoginRequest(username, password, responseListener, errorListener);
 
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(request);
             }
         });
 
+    }
+
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
     }
 }
