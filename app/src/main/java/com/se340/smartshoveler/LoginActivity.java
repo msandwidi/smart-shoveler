@@ -19,7 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.se340.smartshoveler.helpers.Constant;
-import com.se340.smartshoveler.helpers.DatabaseHandler;
 import com.se340.smartshoveler.helpers.Functions;
 import com.se340.smartshoveler.helpers.SessionManager;
 
@@ -30,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     private SessionManager session;
-    private DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-
-
-        // create sqlite database
-        db = new DatabaseHandler(getApplicationContext());
 
         // session manager
         session = new SessionManager(getApplicationContext());
@@ -91,21 +85,21 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (success) {
                                 JSONObject user = jsonRes.getJSONObject("user");
-
+/*
                                 db.addUser(
                                         user.getString(Constant.KEY_UID),
                                         user.getString(Constant.KEY_NAME),
                                         user.getString(Constant.KEY_EMAIL)
                                 );
-
+*/
                                 hideDialog();
                                 Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
-                                goToDashboardIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                //goToDashboardIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 session.setLogin(true);
 
                                 LoginActivity.this.startActivity(goToDashboardIntent);
 
-                                finish();
+                                //finish();
 
                             } else {
                                 hideDialog();
