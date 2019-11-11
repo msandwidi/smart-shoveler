@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // check user is already logged in
         if (session.isLoggedIn()) {
-            Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+            Intent i = new Intent(LoginActivity.this, UserHomeActivity.class);
             startActivity(i);
             finish();
         }
