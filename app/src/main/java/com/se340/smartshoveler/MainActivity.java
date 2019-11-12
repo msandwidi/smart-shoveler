@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
         }); 
 
         final Button btnLogin = findViewById(R.id.btnHomeLogin);
+        final Button btnSkipToSendWork = findViewById(R.id.btnHomeSkipToSendWork);
+
+        btnSkipToSendWork.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent workIntent = new Intent(MainActivity.this, SubmitWorkRequestActivity.class);
+                MainActivity.this.startActivity(workIntent);
+            }}
+        );
 
         btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override

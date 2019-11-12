@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".SubmitWorkRequestActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".UserHomeActivity"
             android:label="@string/title_activity_user_home"
