@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (success) {
                                 hideDialog();
-                                Intent goToDashboardIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                Intent goToDashboardIntent = new Intent(LoginActivity.this, UserHomeActivity.class);
                                 LoginActivity.this.startActivity(goToDashboardIntent);
                             } else {
                                 hideDialog();
