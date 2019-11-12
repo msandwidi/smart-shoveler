@@ -2,25 +2,24 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btnSubmitWork"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SubmitWorkRequestActivity">
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="170dp"
         android:layout_marginLeft="170dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="154dp"
-        android:layout_marginRight="154dp"
-        android:layout_marginBottom="526dp"
+        android:layout_marginEnd="153dp"
+        android:layout_marginRight="153dp"
         android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUserAddress" />
+        tools:layout_editor_absoluteY="489dp" />
 
     <EditText
         android:id="@+id/etUserAddress"
@@ -28,7 +27,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="204dp"
         android:layout_marginEnd="72dp"
         android:layout_marginRight="72dp"
         android:ems="10"
@@ -45,12 +44,55 @@
         android:layout_height="51dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="204dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etUserAddress"
         android:drawableLeft="@drawable/ic_gps_fixed_with_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/etUserAddress"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="689dp" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shoveler"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="109dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lawn Mower"
+        tools:layout_editor_absoluteX="227dp"
+        tools:layout_editor_absoluteY="109dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Looking For"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="77dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="At my"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="175dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
