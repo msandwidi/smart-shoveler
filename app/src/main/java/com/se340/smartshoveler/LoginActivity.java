@@ -41,12 +41,21 @@ public class LoginActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
 
         final TextView registerLink = findViewById(R.id.tvRegosterHere);
+        final TextView resetLink = findViewById(R.id.tvForgotPassword);
 
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
+            }
+        });
+
+        resetLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resetIntent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                LoginActivity.this.startActivity(resetIntent);
             }
         });
 
