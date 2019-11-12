@@ -29,6 +29,12 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     @Override
+    public void onBackPressed() {
+        Intent homeIntent = new Intent(LoginActivity.this, MainActivity.class);
+        LoginActivity.this.startActivity(homeIntent);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

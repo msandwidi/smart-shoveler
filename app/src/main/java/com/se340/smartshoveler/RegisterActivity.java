@@ -28,6 +28,12 @@ public class RegisterActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     @Override
+    public void onBackPressed() {
+        Intent homeIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        RegisterActivity.this.startActivity(homeIntent);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
