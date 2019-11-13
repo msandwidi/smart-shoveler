@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SubmitWorkRequestActivity"></activity>
+        <activity android:name=".select_area"></activity>
+        <activity android:name=".SubmitWorkRequestActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity
             android:name=".UserHomeActivity"
