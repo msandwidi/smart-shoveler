@@ -2,6 +2,7 @@ package com.se340.smartshoveler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -19,25 +20,24 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class SubmitWorkRequestActivity extends AppCompatActivity {
+public class submitLawnCareRequest extends AppCompatActivity {
+
     private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_submit_work_request);
+        setContentView(R.layout.activity_submit_lawn_care_request);
 
-        final Button btnSubmitRequest = findViewById(R.id.btnSubmitLawnRequest);
         final EditText etUserAddress = findViewById(R.id.etUserAddress);
-        final CheckBox cbDriveway = findViewById(R.id.checkBoxTrim);
-        final CheckBox cbSidewalk = findViewById(R.id.checkBoxCutGrass);
-        final CheckBox cbPatio = findViewById(R.id.checkBoxPatio);
+        final CheckBox cbCutGrass = findViewById(R.id.checkBoxCutGrass);
+        final CheckBox cbTrim = findViewById(R.id.checkBoxTrim);
         final EditText etNotes = findViewById(R.id.workNotes);
+        final Button btnSubmit = findViewById(R.id.btnSubmitLawnRequest);
         final Button btnFillToday = findViewById(R.id.btnToday);
         final EditText date = findViewById(R.id.etDate);
 
@@ -49,13 +49,12 @@ public class SubmitWorkRequestActivity extends AppCompatActivity {
             }
         });
 
-        btnSubmitRequest.setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String address = etUserAddress.getText().toString();
-                final boolean driveway = cbDriveway.isChecked();
-                final boolean sidewalk = cbSidewalk.isChecked();
-                final boolean patio = cbPatio.isChecked();
+                final boolean cutGrass = cbCutGrass.isChecked();
+                final boolean trim = cbTrim.isChecked();
                 final String description = etNotes.getText().toString();
 
                 //show loading spinner
@@ -80,8 +79,8 @@ public class SubmitWorkRequestActivity extends AppCompatActivity {
                                 );
 */
                                 hideDialog();
-                                Intent goToDashboardIntent = new Intent(SubmitWorkRequestActivity.this, UserHomeActivity.class);
-                                SubmitWorkRequestActivity.this.startActivity(goToDashboardIntent);
+                                Intent goToDashboardIntent = new Intent(submitLawnCareRequest.this, UserHomeActivity.class);
+                                submitLawnCareRequest.this.startActivity(goToDashboardIntent);
 
                                 //finish();
 
@@ -104,7 +103,7 @@ public class SubmitWorkRequestActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         hideDialog();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SubmitWorkRequestActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(submitLawnCareRequest.this);
                         builder.setMessage("Request failed").setNegativeButton("Retry", null).create()
                                 .show();
                         // Toast.makeText(SmartShoveler.getAppContext(), "Bad Password", Toast.LENGTH_LONG).show();
@@ -114,7 +113,7 @@ public class SubmitWorkRequestActivity extends AppCompatActivity {
                 //send request
                 OrderRequest request = new OrderRequest(address, description, responseListener, errorListener);
 
-                RequestQueue queue = Volley.newRequestQueue(SubmitWorkRequestActivity.this);
+                RequestQueue queue = Volley.newRequestQueue(submitLawnCareRequest.this);
                 queue.add(request);
             }
         });
@@ -131,3 +130,4 @@ public class SubmitWorkRequestActivity extends AppCompatActivity {
             pDialog.dismiss();
     }
 }
+

@@ -20,7 +20,7 @@
         app:navGraph="@navigation/mobile_navigation" />
 
     <Button
-        android:id="@+id/lawn"
+        android:id="@+id/btnLawnCare"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

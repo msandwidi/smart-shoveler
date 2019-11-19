@@ -63,6 +63,16 @@ public class UserHomeActivity extends AppCompatActivity {
                 UserHomeActivity.this.startActivity(workIntent);
             }}
         );
+
+        final Button lawnCareRequest = findViewById(R.id.btnLawnCare);
+
+        lawnCareRequest.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent workIntent = new Intent(UserHomeActivity.this, submitLawnCareRequest.class);
+                UserHomeActivity.this.startActivity(workIntent);
+            }}
+        );
     }
 
     @Override

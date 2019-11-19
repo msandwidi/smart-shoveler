@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".select_area"></activity>
+        <activity android:name=".submitLawnCareRequest"></activity>
+        <activity android:name=".select_area" />
         <activity android:name=".SubmitWorkRequestActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity
