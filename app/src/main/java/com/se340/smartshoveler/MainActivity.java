@@ -34,12 +34,12 @@ public class MainActivity extends AppCompatActivity {
         }); 
 
         final Button btnLogin = findViewById(R.id.btnHomeLogin);
-        final Button btnSkipToSendWork = findViewById(R.id.btnHomeSkipToSendWork);
+        final Button btnSkipToHome = findViewById(R.id.btnSkipToHome);
 
-        btnSkipToSendWork.setOnClickListener(new View.OnClickListener(){
+        btnSkipToHome.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent workIntent = new Intent(MainActivity.this, SubmitWorkRequestActivity.class);
+                Intent workIntent = new Intent(MainActivity.this, UserHomeActivity.class);
                 MainActivity.this.startActivity(workIntent);
             }}
         );

@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         hideDialog();
                         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage("Login Failled").setNegativeButton("Retry", null).create()
+                        builder.setMessage("Login Failed").setNegativeButton("Retry", null).create()
                                 .show();
                         // Toast.makeText(SmartShoveler.getAppContext(), "Bad Password", Toast.LENGTH_LONG).show();
                     }

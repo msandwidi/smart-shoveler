@@ -1,12 +1,19 @@
 package com.se340.smartshoveler;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,16 +24,31 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import android.location.Location;
+import android.location.LocationManager;
+import android.content.Context;
+import android.app.Activity;
 
-public class submitLawnCareRequest extends AppCompatActivity {
+public class submitLawnCareRequest extends AppCompatActivity implements LocationListener {
 
     private ProgressDialog pDialog;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    Geocoder geocoder;
+    List<Address> addresses;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +62,39 @@ public class submitLawnCareRequest extends AppCompatActivity {
         final Button btnSubmit = findViewById(R.id.btnSubmitLawnRequest);
         final Button btnFillToday = findViewById(R.id.btnToday);
         final EditText date = findViewById(R.id.etDate);
+        final Button GPS = findViewById(R.id.btnGPS);
+
+        //Check if app has permission for GPS
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+        onLocationChanged(location);
+
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        GPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    String address = addresses.get(0).getAddressLine(0);
+
+                    etUserAddress.setText(address);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        });
+
 
         btnFillToday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +172,14 @@ public class submitLawnCareRequest extends AppCompatActivity {
                 queue.add(request);
             }
         });
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location)
+    {
+        Double longitude = location.getLongitude();
+        Double latitude = location.getLatitude();
 
     }
 
